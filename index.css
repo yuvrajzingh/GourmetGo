@@ -62,3 +62,22 @@ body{
 .filter-btn{
     margin: 10px;
 }
+
+.shimmer-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.shimmer-card{
+    height: 400px;
+    width: 200px;
+    background-color: rgb(186, 180, 180);
+    margin: 10px;
+}
+
+.login-btn{
+    padding: 20px;
+}
+.logout-btn{
+    padding: 20px;
+}

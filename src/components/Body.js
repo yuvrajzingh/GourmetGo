@@ -2,122 +2,20 @@ import './../../index.css';
 import resList from "../utils/mockData";
 import RestaurantCard from "./RestaurantCard";
 import { useState } from 'react';
+import Shimmer from './Shimmer';
 
 
 const Body = () => {
 
+    //whenever state variables update, react triggers a reconciliation cycle(re-renders the component)
     const [listOfRestaurant, setListOfRestaurant] = useState(resList)
-    const [search, setSearch] = useState('')
-    // let listORes = [
-    //     {
-    //         "info": {
-    //           "resId": 310446,
-    //           "name": "Burger King",
-    //           "image": {
-    //             "url": "https://b.zmtcdn.com/data/pictures/chains/8/310078/749216f498eb2ed21ffd317f4bdc8a1d_o2_featured_v2.jpg"
-    //           },
-    //           "rating": {
-    //             "aggregate_rating": "4.9",
-    //           },
-    //           "cft": {
-    //             "text": "₹400 for two"
-    //           },
-    //           "locality": {
-    //             "name": "Connaught Place, New Delhi",
-    //           },
-    //           "cuisine": [
-    //             {               
-    //               "name": "Burger"
-    //             },
-    //             {                 
-    //               "name": "Fast Food"
-    //             },
-    //             {                 
-    //               "name": "Desserts"
-    //             },
-    //             {
-    //               "name": "Shake"
-    //             }
-    //           ],
-    //         },
-    //         "order": {
-    //           "deliveryTime": "28 min",
-    //         },           
-    //     },
-    //     {
-    //         "info": {
-    //           "resId": 310447,
-    //           "name": "Burger King",
-    //           "image": {
-    //             "url": "https://b.zmtcdn.com/data/pictures/chains/8/310078/749216f498eb2ed21ffd317f4bdc8a1d_o2_featured_v2.jpg"
-    //           },
-    //           "rating": {
-    //             "aggregate_rating": "4.9",
-    //           },
-    //           "cft": {
-    //             "text": "₹400 for two"
-    //           },
-    //           "locality": {
-    //             "name": "Connaught Place, New Delhi",
-    //           },
-    //           "cuisine": [
-    //             {               
-    //               "name": "Burger"
-    //             },
-    //             {                 
-    //               "name": "Fast Food"
-    //             },
-    //             {                 
-    //               "name": "Desserts"
-    //             },
-    //             {
-    //               "name": "Shake"
-    //             }
-    //           ],
-    //         },
-    //         "order": {
-    //           "deliveryTime": "28 min",
-    //         },           
-    //     },
-    //     {
-    //         "info": {
-    //           "resId": 310448,
-    //           "name": "Burger King",
-    //           "image": {
-    //             "url": "https://b.zmtcdn.com/data/pictures/chains/8/310078/749216f498eb2ed21ffd317f4bdc8a1d_o2_featured_v2.jpg"
-    //           },
-    //           "rating": {
-    //             "aggregate_rating": "3.9",
-    //           },
-    //           "cft": {
-    //             "text": "₹400 for two"
-    //           },
-    //           "locality": {
-    //             "name": "Connaught Place, New Delhi",
-    //           },
-    //           "cuisine": [
-    //             {               
-    //               "name": "Burger"
-    //             },
-    //             {                 
-    //               "name": "Fast Food"
-    //             },
-    //             {                 
-    //               "name": "Desserts"
-    //             },
-    //             {
-    //               "name": "Shake"
-    //             }
-    //           ],
-    //         },
-    //         "order": {
-    //           "deliveryTime": "28 min",
-    //         },           
-    //     },
-    // ];
+    const [filteredRestaurant, setFilteredRestaurant] = useState(resList);
+    const [search, setSearch] = useState('');
 
     const handleSearch = () =>{
-        
+
+        setFilteredRestaurant(listOfRestaurant.filter(res => (res.info.name.toLowerCase().includes(search.toLowerCase()))));
+      
     }
 
     const handleFilter = () =>{
@@ -127,22 +25,36 @@ const Body = () => {
         setListOfRestaurant(filteredList);
     }
     
+    // if(listOfRestaurant === resList){ //* shimmer component
+    //     return <Shimmer/>
+    // }
 
     return (
-        <div className="main-body">
-            <div className="search">
-                <input type="text" className='search-txt'/>
-                <button className="search-btn" onclick={handleSearch}>
-                    🔍
-                </button>
-            </div>
+        <div className="main-body">           
             <div className="filter">
+                <div className="search">
+                    <input type="text" 
+                        className='search-box'
+                        placeholder='search...' 
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value);
+                        }}
+                        onKeyDown={(e) =>{
+                            if(e.key === 'Enter'){
+                                handleSearch();
+                            }
+                        }} />
+                    <button className="search-btn" onClick={handleSearch}>
+                        🔍
+                    </button>
+                </div>
                 <button className='filter-btn' onClick={handleFilter}>Top</button>
             </div>
             <div className="res-container">
                 {/* restaurants  */}
                 {
-                    listOfRestaurant.map(restaurant => (
+                    filteredRestaurant.map(restaurant => (
                         <RestaurantCard key={restaurant.id} resList={restaurant}/> 
                     ))
                 }
