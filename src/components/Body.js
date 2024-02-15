@@ -1,35 +1,50 @@
 import './../../index.css';
 import resList from "../utils/mockData";
 import RestaurantCard from "./RestaurantCard";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Shimmer from './Shimmer';
+import { Link } from 'react-router-dom';
+import useRestaurants from '../utils/useRestaurants';
+import useOnlineStatus from '../utils/useOnlineStatus';
 
 
 const Body = () => {
 
     //whenever state variables update, react triggers a reconciliation cycle(re-renders the component)
-    const [listOfRestaurant, setListOfRestaurant] = useState(resList)
-    const [filteredRestaurant, setFilteredRestaurant] = useState(resList);
+    const [filteredRestaurant, setFilteredRestaurant] = useState([]);
     const [search, setSearch] = useState('');
 
-    const handleSearch = () =>{
+    const listOfRestaurant = useRestaurants();
+    useEffect(() => {
+        setFilteredRestaurant(listOfRestaurant);
+    }, [listOfRestaurant]);
 
+    const handleSearch = () =>{
         setFilteredRestaurant(listOfRestaurant.filter(res => (res.info.name.toLowerCase().includes(search.toLowerCase()))));
-      
     }
+
 
     const handleFilter = () =>{
         const filteredList = listOfRestaurant.filter(res => 
-             res.info.rating.aggregate_rating > 4
+             res.info.avgRating > 4
         );
-        setListOfRestaurant(filteredList);
+        setFilteredRestaurant(filteredList);
     }
     
-    // if(listOfRestaurant === resList){ //* shimmer component
-    //     return <Shimmer/>
-    // }
 
-    return (
+    const onlineStatus = useOnlineStatus();
+
+    if(onlineStatus === false)
+        return (
+    
+            <h1>
+                Looks like you're offline!! Please check your internet connection
+            </h1>
+        )
+
+
+
+    return filteredRestaurant.length === 0  ? <Shimmer/> : (
         <div className="main-body">           
             <div className="filter">
                 <div className="search">
@@ -55,7 +70,8 @@ const Body = () => {
                 {/* restaurants  */}
                 {
                     filteredRestaurant.map(restaurant => (
-                        <RestaurantCard key={restaurant.id} resList={restaurant}/> 
+                        
+                        <Link to={"/restaurants/"+ restaurant.info.id} key={restaurant.info.id}><RestaurantCard  resList={restaurant}/></Link>                        
                     ))
                 }
             </div>

@@ -1,10 +1,12 @@
 body{
     margin: 0;
     padding: 0;
+    
 }
 
+
 .app{
-    background-color: #f7f7f7;
+    background-color: #e3dfdf;
 }
 
 .header{
@@ -36,7 +38,7 @@ body{
     height: auto;
     margin: 0.5rem;
     padding: 5px;
-    background-color: rgb(192, 38, 38);
+    background-color: rgb(184, 183, 182);
 }
 
 .res-card:hover{
@@ -66,13 +68,15 @@ body{
 .shimmer-container{
     display: flex;
     flex-wrap: wrap;
+    margin: 4rem;
 }
 
 .shimmer-card{
-    height: 400px;
+    height: 300px;
     width: 200px;
-    background-color: rgb(186, 180, 180);
+    background-color: rgb(206, 206, 206);
     margin: 10px;
+
 }
 
 .login-btn{
