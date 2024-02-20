@@ -15,6 +15,7 @@ const Body = () => {
     const [search, setSearch] = useState('');
 
     const listOfRestaurant = useRestaurants();
+
     useEffect(() => {
         setFilteredRestaurant(listOfRestaurant);
     }, [listOfRestaurant]);
@@ -46,10 +47,10 @@ const Body = () => {
 
     return filteredRestaurant.length === 0  ? <Shimmer/> : (
         <div className="main-body">           
-            <div className="filter">
-                <div className="search">
+            <div className="filter flex">
+                <div className="search m-4 p-4">
                     <input type="text" 
-                        className='search-box'
+                        className='border border-solid border-black rounded-md'
                         placeholder='search...' 
                         value={search}
                         onChange={(e) => {
@@ -60,13 +61,15 @@ const Body = () => {
                                 handleSearch();
                             }
                         }} />
-                    <button className="search-btn" onClick={handleSearch}>
+                    <button className="px-4 py-2" onClick={handleSearch}>
                         🔍
                     </button>
                 </div>
-                <button className='filter-btn' onClick={handleFilter}>Top</button>
+                <div className="px-4 py-2">
+                 <button className='filter-btn' onClick={handleFilter}>Top</button>
+                </div>
             </div>
-            <div className="res-container">
+            <div className="flex flex-wrap">
                 {/* restaurants  */}
                 {
                     filteredRestaurant.map(restaurant => (
